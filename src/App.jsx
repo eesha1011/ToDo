@@ -15,7 +15,7 @@ function App() {
 
   const savedTasks = async () => {
     try{
-      const response = await axios.get("https://api.freeapi.app/api/v1/todos");
+      const response = await axios.get("http://localhost:5000/api/todos");
       console.log("API Response", response.data);
 
       const todos = response.data?.data || [];
@@ -27,6 +27,7 @@ function App() {
   }
 
   useEffect(() => {
+    console.log("Tasks state:", tasks);
     savedTasks()
   }, []);
 

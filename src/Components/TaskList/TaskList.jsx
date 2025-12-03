@@ -32,7 +32,7 @@ function TaskList({tasks, setTasks}) {
             console.log("Toggle the Checkbox", id);
             
 
-            const response = await axios.patch(`https://api.freeapi.app/api/v1/todos/toggle/status/${id}`);
+            const response = await axios.patch(`http://localhost:5000/api/todos/toggle/status/${id}`);
             
             console.log("Toggle Response:", response.data);
             alert("Yay!! Task Completed..");
@@ -40,7 +40,7 @@ function TaskList({tasks, setTasks}) {
             const updatedTask = response.data.data;
             
             const updatedTasks = tasks.map((task) =>
-                task._id === id ? { ...task, status: updatedTask.status } : task);
+                task._id === id ? response.data.data : task);
 
             setTasks(updatedTasks);
 
@@ -64,10 +64,10 @@ function TaskList({tasks, setTasks}) {
 
     const deleteTask = async (id) => {
         try {
-            const response = await axios.delete(`https://api.freeapi.app/api/v1/todos/${id}`)
+            const response = await axios.delete(`http://localhost:5000/api/todos/${id}`)
             const updatedTasks = tasks.filter(task => task._id !== id);
             setTasks(updatedTasks);
-            alert("delete successful");
+            alert("deleted successfully");
         } catch (error) {
             console.error("Error", error);
             
@@ -93,7 +93,7 @@ function TaskList({tasks, setTasks}) {
                     return(
                         <li key={task._id} className={`py-1 px-2 border rounded shadow-sm flex justify-between items-center ${isOverdue ? "bg-red-100 border-red-500" : ""}`}>
                             <div className='flex gap-2'>
-                                <input type="checkbox" checked={task.isComplete} onChange={() => toggleCompleted (task._id)} className='mr-2' />
+                                <input type="checkbox" checked={task.status === "Completed"} onChange={() => toggleCompleted (task._id)} className='mr-2' />
                                 <div>
                                     <span className='text-lg font-semibold text-gray-700'>{task.title}</span>
                                     <p><span className="font-medium">Deadline: </span> {task.isComplete}</p>

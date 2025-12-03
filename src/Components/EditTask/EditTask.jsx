@@ -21,7 +21,7 @@ function EditTask({tasks, setTasks}) {
     const fetchedTasks = async () => {
 
       try {
-        const response = await axios.get(`https://api.freeapi.app/api/v1/todos/${id}`);
+        const response = await axios.get(`http://localhost:5000/api/todos/${id}`);
         const xyz =  response.data.data || response.data;
           setEditedTask({
           title: xyz.title || "",
@@ -53,7 +53,7 @@ function EditTask({tasks, setTasks}) {
     e.preventDefault();
 
     try {
-      await axios.patch(`https://api.freeapi.app/api/v1/todos/${id}`, editTask);
+      await axios.patch(`http://localhost:5000/api/todos/${id}`, editTask);
       alert("Task updated successfully!");
 
       navigate("/");
@@ -86,7 +86,13 @@ function EditTask({tasks, setTasks}) {
                     <div className='flex gap-4'>
                         <div className='flex flex-col w-60'>
                             <label htmlFor="priority">Priority</label>
-                            <input type="text" name='priority' placeholder='Select priority' required value={editTask.priority} onChange={handleEditTask} className='text-sm border-1 rounded-sm border-gray-300 p-1.5' />
+                            <select name="priority" required value={editTask.priority} onChange={handleEditTask} className="text-sm border-1 rounded-sm border-gray-300 p-1.5">
+                                <option value="">Select Priority</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                            {/* <input type="text" name='priority' placeholder='Select priority' required value={editTask.priority} onChange={handleEditTask} className='text-sm border-1 rounded-sm border-gray-300 p-1.5' /> */}
                         </div>
                         <div className='flex flex-col w-60'>
                             <label htmlFor="deadline">Deadline</label>

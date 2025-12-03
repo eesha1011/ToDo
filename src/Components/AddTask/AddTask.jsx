@@ -10,7 +10,7 @@ function AddTask({setTasks}) {
         comments: "",
         id: Date.now(),
         status: "pending",
-        date: new Date().toISOString().split("T")[0],
+        // date: new Date().toISOString().split("T")[0],
     })
 
     const newTask = {...addTask, id: Date.now(),}
@@ -28,13 +28,14 @@ function AddTask({setTasks}) {
         console.log("Submitting Task", addTask);
 
         try {
-            const response = await axios.post("https://api.freeapi.app/api/v1/todos", {
+            const response = await axios.post("http://localhost:5000/api/todos", {
                 title: addTask.title,
+                priority: addTask.priority.charAt(0).toUpperCase() + addTask.priority.slice(1),
                 description: addTask.comments,
                 // date: addTask.date,
-                // deadline: addTask.deadline,
-                // id: addTask.id,
-                // completed: false,
+                deadline: addTask.deadline,
+                id: addTask.id,
+                status: addTask.status.charAt(0).toUpperCase() + addTask.status.slice(1),
             });
 
             console.log("✅ Task created:", response.data);
@@ -57,8 +58,8 @@ function AddTask({setTasks}) {
                 deadline: "",
                 comments: "",
                 id: Date.now(),
-                status: "pending",
-                date: new Date().toISOString().split("T")[0],
+                status: "Pending",
+                // date: new Date().toISOString().split("T")[0],
             });
 
             navigate("/");
@@ -117,8 +118,17 @@ function AddTask({setTasks}) {
                     <div className='flex gap-4'>
                         <div className='flex flex-col w-60'>
                             <label htmlFor="priority">Priority</label>
-                            <input type="text" name='priority' placeholder='Select priority' required value={addTask.priority} onChange={handleTaskInput} className='text-sm border-1 rounded-sm border-gray-300 p-1.5' />
+                            <select name="priority" required value={addTask.priority} onChange={handleTaskInput} className="text-sm border-1 rounded-sm border-gray-300 p-1.5">
+                                <option value="">Select Priority</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
                         </div>
+                        {/* <div className='flex flex-col w-60'>
+                            <label htmlFor="priority">Priority</label>
+                            <input type="text" name='priority' placeholder='Select priority' required value={addTask.priority} onChange={handleTaskInput} className='text-sm border-1 rounded-sm border-gray-300 p-1.5' />
+                        </div> */}
                         <div className='flex flex-col w-60'>
                             <label htmlFor="deadline">Deadline</label>
                             <input type="date" name='deadline' placeholder='Select Date' required value={addTask.deadline} onChange={handleTaskInput} className='text-sm border-1 rounded-sm border-gray-300 p-1.5' />
